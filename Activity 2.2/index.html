@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Events</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+
+<body>
+  <main>
+    <header>
+      <h1>Events in Javascript</h1>
+      <p>Toggle CSS Classes, button events, and interacting with form data in the browser.</p>
+    </header>
+    <section id="section-toggle">
+      <h2>1. CSS Class Toggle</h2>
+      <p>
+        Clicking the button adds or removes the <code>.is-active</code> class.
+        The class change drives the visual state via CSS alone.
+      </p>
+      <!-- TODO: Update to have standard class for styles -->
+      <button id="toggle-btn" type="button">Toggle me</button>
+      <p id="toggle-status">Status: <strong>inactive</strong></p>
+      <p><em>To try option 2 as noted on line 18 of the script file, move the id to the strong tag.</em></p>
+    </section>
+
+    <section id="section-form">
+      <h2>2. Form Submit → Array → DOM</h2>
+      <p>
+        Submitting the form pushes the input value into an array, then
+        re-renders the full list. The Reset button restores the default entries.
+      </p>
+
+      <form id="character-form" novalidate>
+        <div class="field">
+          <label for="character-input">Character name</label>
+          <input type="text" id="character-input" name="characterName" placeholder="e.g. Gandalf" required
+            autocomplete="off" />
+        </div>
+        <button type="submit">Add character</button>
+      </form>
+
+      <ul id="character-list" aria-label="Character list" aria-live="polite">
+        <!-- Rendered by JS -->
+      </ul>
+
+      <button id="reset-btn" type="button">Reset list</button>
+    </section>
+    <section id="section-filter">
+      <h2>3. Checkbox Filter — Star Wars Characters</h2>
+      <p>
+        Each checkbox filters the character list by alignment. Selecting
+        multiple boxes shows characters matching <em>any</em> of the chosen
+        alignments. Deselecting all shows the full roster.
+      </p>
+
+      <fieldset id="filter-controls">
+        <legend>Filter by alignment</legend>
+
+        <label for="jedi">
+          <input type="checkbox" name="alignment" value="jedi" id="jedi" />
+          Jedi Order
+        </label>
+        <label for="sith">
+          <input type="checkbox" name="alignment" value="sith" id="sith" />
+          Sith
+        </label>
+        <label for="empire">
+          <input type="checkbox" name="alignment" value="empire" id="empire" />
+          Galactic Empire
+        </label>
+        <label for="republic">
+          <input type="checkbox" name="alignment" value="republic" id="republic" />
+          Galactic Republic
+        </label>
+        <label for="separatist">
+          <input type="checkbox" name="alignment" value="separatist" id="separatist" />
+          Separatists
+        </label>
+      </fieldset>
+
+      <p id="result-count"></p>
+      <ul id="sw-character-list" aria-label="Star Wars character list" aria-live="polite">
+        <!-- Rendered by JS -->
+      </ul>
+    </section>
+  </main>
+</body>
+
+</html>
