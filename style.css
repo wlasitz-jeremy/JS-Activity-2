@@ -1,0 +1,126 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #111;
+}
+
+h1 {
+  border-bottom: 2px solid #111;
+  padding-bottom: 0.5rem;
+}
+
+section {
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #999;
+  border-radius: 3px;
+  width: 250px;
+}
+
+button {
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #555;
+  border-radius: 3px;
+  background: #f0f0f0;
+}
+
+button:hover {
+  background: #ddd;
+}
+
+/* ── Section 1: Toggle ────────────────────── */
+
+/* TODO: Create class for all btns, standardize the toggle button size specifically */
+#toggle-btn {
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 20px;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+#toggle-btn.is-active {
+  background: #2c7a2c;
+  color: #fff;
+  border-color: #1e5c1e;
+}
+
+/* ── Section 2: Name list ─────────────────── */
+#character-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+#character-form .field {
+  display: flex;
+  flex-direction: column;
+}
+
+#character-list,
+#sw-character-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+#character-list li,
+#sw-character-list li {
+  padding: 0.2rem 0;
+}
+
+#reset-btn {
+  margin-top: 1rem;
+}
+
+/* ── Section 3: SW Filter ─────────────────── */
+#filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+#filter-controls label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+#result-count {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
