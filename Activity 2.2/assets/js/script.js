@@ -25,6 +25,7 @@ window.addEventListener("resize", () => {
 });
 
 // -- Challenge 2: Image Carousel --
+
 const carouselTrack = document.querySelector(".carousel-track");
 const slides = document.querySelectorAll(".carousel-slide");
 const prevBtn = document.querySelector(".carousel-btn.prev");
@@ -32,58 +33,118 @@ const nextBtn = document.querySelector(".carousel-btn.next");
 const dotsContainer = document.querySelector(".carousel-dots");
 
 // TODO: Track the current slide index (start at 0)
-let currentSlide = 0;
-
+let currentIndex = 0;
 // TODO: Write showSlide(index) — move the track with translateX, keep index in bounds
 const showSlide = (index) => {
-  currentSlide = index;
-  carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+  const previousIndex = currentIndex;
+  currentIndex = ((index % slides.length) + slides.length) % slides.length;
+  const isWrapping =
+    (previousIndex === slides.length - 1 && currentIndex === 0) ||
+    (previousIndex === 0 && currentIndex === slides.length - 1);
+  if (isWrapping) {
+    carouselTrack.style.transition = "none";
+  }
+  carouselTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+  if (isWrapping) {
+    carouselTrack.offsetHeight;
+    carouselTrack.style.transition = "";
+  }
+  // dots indicator
+  updateDots();
 };
-
 // TODO: Wire up prevBtn and nextBtn clicks to call showSlide with the updated index
 prevBtn.addEventListener("click", () => {
-  showSlide((currentSlide - 1 + slides.length) % slides.length);
+  showSlide(currentIndex - 1);
 });
 nextBtn.addEventListener("click", () => {
-  showSlide((currentSlide + 1) % slides.length);
+  showSlide(currentIndex + 1);
 });
-
 // Extra: generate a dot button per slide inside dotsContainer, keep the active dot in sync
-dotsContainer.innerHTML = slides
-  .map(
-    (_, i) =>
-      `<button class="dot${i === 0 ? " active" : ""}" data-index="${i}"></button>`,
-  )
-  .join("");
+slides.forEach((slide, index) => {
+  const dot = document.createElement("button");
+  dot.classList.add("carousel-dot");
+  dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+  dot.addEventListener("click", () => {
+    showSlide(index);
+  });
+  dotsContainer.appendChild(dot);
+});
+const updateDots = () => {
+  const dots = dotsContainer.querySelectorAll(".carousel-dot");
+  dots.forEach((dot, index) => {
+    if (index === currentIndex) {
+      dot.classList.add("active");
+    } else {
+      dot.classList.remove("active");
+    }
+  });
+};
+updateDots();
 
 // -- Challenge 3: Username Validation --
+
 const usernameForm = document.querySelector("#username-form");
 const usernameInput = document.querySelector("#username-input");
 const validationMsg = document.querySelector("#username-validation");
-
 // Rules: no leading numbers, no spaces, no special characters (@ # $ % & * ! ?)
 // TODO: Listen for the 'submit' event — call event.preventDefault()
+// TODO: Validate the input value and update validationMsg with an error or success class
+// Extra: replace spaces with hyphens before validating and show the corrected value
+
+const hasNoSpecialChars = (str) => /^[a-zA-Z0-9_-]+$/.test(str);
+
+const validateUsername = (username) => {
+  if (!hasNoSpecialChars(username))
+    return {
+      valid: false,
+      reason: "username cannot contain special characters",
+    };
+  return { valid: true, reason: null };
+};
+
 usernameForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  // access the text information trim space on the ends
+  const inputText = usernameInput.value.trim();
 
-  // TODO: Validate the input value and update validationMsg with an error or success class
-  const rawValue = usernameInput.value;
-  const correctedValue = rawValue.replace(/\s+/g, "-");
-  usernameInput.value = correctedValue;
+  // replace all spaces with _  **USE CASE ISSUE: What if they put in lots of spaces in a row ?? TODO SOLVE IN REFACTOR
+  let outputText = inputText.replaceAll(" ", "_");
+  usernameInput.value = outputText;
 
-  // Extra: replace spaces with hyphens before validating and show the corrected value
-  const isValid = /^[a-zA-Z][a-zA-Z0-9-]*$/.test(correctedValue);
-  if (isValid) {
-    validationMsg.textContent = "Username is valid!";
-    validationMsg.classList.remove("error");
-    validationMsg.classList.add("success");
-  } else {
-    validationMsg.textContent =
-      "Invalid username. Must start with a letter and contain only letters, numbers, or hyphens.";
-    validationMsg.classList.remove("success");
-    validationMsg.classList.add("error");
+  // access input field and show the updated name accordingly
+  // EVALUATE CONDITIONS
+  // error if starting with a number
+  if (startsWithNumber) {
+    // Show validator message
+    showValidation("Username cannot start with a number", "error");
+    return;
   }
+
+  // get result of running tests
+  // if tests don't pass, send error info accordingly
+  // follow up space error (in case something got past for whatever reason)
+  const hasSpaces = /\s/.test(outputText);
+  if (hasSpaces) {
+    showValidation("Username cannot contain spaces", "error");
+    return;
+  }
+
+  const result = validateUsername(outputText);
+
+  if (!result.valid) {
+    showValidation(result.reason, "error");
+    return;
+  }
+  // show validation message
+  showValidation(`Username: ${outputText} is valid!`, "success");
 });
+
+// helper function to show message
+function showValidation(message, type) {
+  validationMsg.textContent = message;
+  validationMsg.classList.remove("error", "success");
+  validationMsg.classList.add(type);
+}
 
 // -- Challenge 4: Character Filter & Sort --
 const cardContainer = document.querySelector("#character-grid");
